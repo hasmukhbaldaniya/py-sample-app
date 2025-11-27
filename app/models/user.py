@@ -1,3 +1,5 @@
+from typing import List
+
 from pydantic import BaseModel, constr, Field, EmailStr
 
 class UserCreate(BaseModel):
@@ -23,3 +25,13 @@ class UserUpdate(BaseModel):
     email: EmailStr | None = Field(
         None, description="Must be a valid email address"
     )
+
+class UserResponse(BaseModel):
+    id: int
+    first_name: str
+    last_name: str
+    email: EmailStr
+
+class UserListResponse(BaseModel):
+    count: int
+    users: List[UserResponse]

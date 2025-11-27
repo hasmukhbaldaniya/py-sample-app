@@ -5,11 +5,11 @@ from sqlalchemy.orm import Session
 
 from app.db.client import DBClient
 from app.db.models.users import Users
-from app.models import UserCreate, UserUpdate
+from app.models import UserCreate, UserUpdate, UserListResponse, UserResponse
 
 user_router = APIRouter(prefix="/user")
 
-@user_router.get("/")
+@user_router.get("/", response_model=UserListResponse)
 def list_users(db: Session = Depends(DBClient.get_db_session)):
     """
     Get all users from the database.
@@ -29,7 +29,7 @@ def list_users(db: Session = Depends(DBClient.get_db_session)):
     }
 
 
-@user_router.get("/{user_id}")
+@user_router.get("/{user_id}", response_model=UserResponse)
 def get_user(user_id: int, db: Session = Depends(DBClient.get_db_session)):
     """
     Get a specific user by ID.
@@ -47,7 +47,7 @@ def get_user(user_id: int, db: Session = Depends(DBClient.get_db_session)):
     }
 
 
-@user_router.post("/", status_code=201)
+@user_router.post("/", status_code=201, response_model=UserResponse)
 def create_user(user_data: UserCreate, db: Session = Depends(DBClient.get_db_session)):
     """
     Create a new user in the database.
@@ -80,7 +80,7 @@ def create_user(user_data: UserCreate, db: Session = Depends(DBClient.get_db_ses
 
 
 
-@user_router.put("/{user_id}")
+@user_router.put("/{user_id}", response_model=UserResponse)
 def update_user(
     user_id: int,
     user_data: UserUpdate,
@@ -125,7 +125,7 @@ def update_user(
 
 
 
-@user_router.delete("/{user_id}")
+@user_router.delete("/{user_id}", response_model=UserResponse)
 def delete_user(user_id: int, db: Session = Depends(DBClient.get_db_session)):
     """
     Delete a user by ID.
