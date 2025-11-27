@@ -5,23 +5,9 @@ from sqlalchemy.orm import Session
 
 from app.db.client import DBClient
 from app.db.models.users import Users
+from app.models import UserCreate, UserUpdate
 
 user_router = APIRouter(prefix="/user")
-
-
-class UserCreate(BaseModel):
-    """Schema for creating a new user"""
-    first_name: str
-    last_name: str
-    email: str
-
-
-class UserUpdate(BaseModel):
-    """Schema for updating a user"""
-    first_name: str | None = None
-    last_name: str | None = None
-    email: str | None = None
-
 
 @user_router.get("/")
 def list_users(db: Session = Depends(DBClient.get_db_session)):
